@@ -1,0 +1,5 @@
+#!/bin/bash
+
+source ./bin/const/env.sh
+
+docker-compose run node ./node_modules/.bin/typings $@

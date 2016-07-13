@@ -1,0 +1,7 @@
+#!/bin/bash
+
+source ./bin/const/env.sh
+
+printf "cat <<EOS\n$(cat README.md.tmpl)\nEOS\n" |\
+  sed s/\`/\\\\\`/g |\
+  bash > README.md

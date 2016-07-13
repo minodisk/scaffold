@@ -1,0 +1,11 @@
+# Image
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+
+# Font
+*.otf binary
+*.eot binary
+*.ttf binary
+*.woff binary

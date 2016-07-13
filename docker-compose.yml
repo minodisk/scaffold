@@ -1,0 +1,48 @@
+version: '2'
+
+services:
+
+  nginx:
+    container_name: scaffold_nginx
+    build:
+      context: ./nginx
+      args:
+        NODE_PORT: $BROWSER_SYNC_PORT
+        GO_PORT: $GIN_PORT
+    volumes_from:
+      - node
+    ports:
+      - 80:80
+
+  node:
+    container_name: scaffold_node
+    build:
+      context: ./node
+    volumes:
+      - /usr/src/nginx
+      - ./node:/usr/src/node
+    ports:
+      - $BROWSER_SYNC_PORT:$BROWSER_SYNC_PORT
+      - $BROWSER_SYNC_CONFIG_PORT:$BROWSER_SYNC_CONFIG_PORT
+      - $INSPECTOR_PORT:$INSPECTOR_PORT
+    environment:
+      IS_WATCH:
+      HOST_IP:
+      SSR_PORT:
+      BROWSER_SYNC_PORT:
+      BROWSER_SYNC_CONFIG_PORT:
+      INSPECTOR_PORT:
+      NODE_DEBUG_PORT:
+    command: npm start
+
+  go:
+    container_name: scaffold_go
+    build:
+      context: ./go
+    volumes:
+      - /go/src/github.com/minodisk/scaffold/go/bin
+      - ./go:/go/src/github.com/minodisk/scaffold/go
+    environment:
+      GIN_PORT:
+      API_PORT:
+    command: sh -c "gin --immediate --port $$GIN_PORT --appPort $$API_PORT run"
